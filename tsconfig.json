@@ -8,12 +8,28 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "./dist",
+    "baseUrl": "./",
+    "paths": {
+      "*": [
+        "./node_modules/@types/*",
+        "*"
+      ]
+    },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
+    "strict": false,
     "allowJs": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "sourceMap": true
-  }
+    "sourceMap": true,
+    "types": []
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*"
+  ],
+  "exclude": [
+    "./node_modules/*",
+  ]
 }

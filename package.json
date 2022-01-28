@@ -5,7 +5,7 @@
   "type": "module",
   "license": "MIT",
   "engines": {
-    "node": "14.x"
+    "node": "16.x"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
@@ -42,9 +42,8 @@
   "scripts": {
     "test": "jest",
     "dev": "ts-node-dev --inspect --respawn --transpile-only --ignore-watch node_modules src/server.ts",
-    "prestart": "yarn typeorm migration:run",
     "start": "node dist/src/server.js",
     "build": "rm -rf dist/ && tsc",
-    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   }
 }
