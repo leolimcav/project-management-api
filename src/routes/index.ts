@@ -12,7 +12,7 @@ import HighlightRoutes from './HighlightRoutes';
 const routes = Router();
 
 routes.get("/", (req, res) => {
-  return response.status(200).json({
+  return res.status(200).json({
     status: "OK",
     endpoints: [
       "[GET] /administrators/:id",
