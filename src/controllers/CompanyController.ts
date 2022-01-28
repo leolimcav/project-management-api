@@ -22,6 +22,7 @@ export default class CompanyController {
     const company = await companyRepo.findOne({ id });
 
     if(!company) {
+      console.info("[COMPANY-CONTROLLER] -> ", "Company not found!");
       return response.status(404).json("Company not found!");
     }
 
@@ -35,18 +36,21 @@ export default class CompanyController {
 
     if(!name || !email || !phone_number || !address || !administrator_id) {
       const fieldName = !name ? "name" : !email ? "email": !address ? "address" : !phone_number? "phone_number" : "administrator_id";
+      console.info("[COMPANY-CONTROLLER] -> ", `The field ${fieldName} is empty!`);
       return response.status(400).json(`The field ${fieldName} is empty!`);
     }
 
     const emailAlreadyExists = await companyRepo.findOne({ email });
 
     if(emailAlreadyExists) {
+      console.info("[COMPANY-CONTROLLER] -> ", "Email already in use!");
       return response.status(400).json("Email already in use!");
     }
 
     const administrator = await administratorRepo.findOne({ id: administrator_id });
 
     if(!administrator) {
+      console.info("[COMPANY-CONTROLLER] -> ", "Administrator not found!");
       return response.status(404).json("Administrator not found!");
     }
 
@@ -70,12 +74,14 @@ export default class CompanyController {
 
     if(!name || !email || !phone_number || !address) {
       const fieldName = !name ? "name" : !email ? "email": !address ? "address" : "phone_number";
+      console.info("[COMPANY-CONTROLLER] -> ", `The field ${fieldName} is empty!`);
       return response.status(400).json(`The field ${fieldName} is empty!`);
     }
 
     const company = await companyRepo.findOne({ id });
 
     if(!company) {
+      console.info("[COMPANY-CONTROLLER] -> ", "Company not found!");
       return response.status(404).json("Company not found!");
     }
 
@@ -95,6 +101,7 @@ export default class CompanyController {
     const company = await companyRepo.findOne({ id });
 
     if(!company) {
+      console.info("[COMPANY-CONTROLLER] -> ", "Company not found!");
       return response.status(404).json("Company not found!");
     }
 

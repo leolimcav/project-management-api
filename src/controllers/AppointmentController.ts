@@ -27,6 +27,7 @@ export default class AppointmentController {
     });
 
     if(!appointment) {
+      console.info("[APPOINTMENT-CONTROLLER] -> ", "Appointment not found!");
       return response.status(404).json("Appointment not found!");
     }
 
@@ -41,18 +42,21 @@ export default class AppointmentController {
 
     if(!date || !administrator_id || !meeting_id) {
       const fieldName = !date ? "date" : !administrator_id ? "administrator_id" : "meeting_id";
+      console.info("[APPOINTMENT-CONTROLLER] -> ", `The field ${fieldName} is empty!`);
       return response.status(400).json(`The field ${fieldName} is empty!`);
     }
 
     const administrator = await administratorRepo.findOne({ id: administrator_id });
 
     if(!administrator) {
+      console.info("[APPOINTMENT-CONTROLLER] -> ", "Administrator not found!");
       return response.status(404).json("Administrator not found!");
     }
 
     const meeting = await meetingRepo.findOne({ id: meeting_id });
 
     if(!meeting) {
+      console.info("[APPOINTMENT-CONTROLLER] -> ", "Meeting not found!");
       return response.status(404).json("Meeting not found!");
     }
 
@@ -73,18 +77,21 @@ export default class AppointmentController {
 
     if(!date || !meeting_id) {
       const fieldName = !date ? "date" : "meeting_id";
+      console.info("[APPOINTMENT-CONTROLLER] -> ",`The field ${fieldName} is empty!`);
       return response.status(400).json(`The field ${fieldName} is empty!`);
     }
 
     const appointment = await appointmentRepo.findOne({ id });
 
     if(!appointment) {
+      console.info("[APPOINTMENT-CONTROLLER] -> ","Appointment not found!");
       return response.status(404).json("Appointment not found!");
     }
 
     const meeting = await meetingRepo.findOne({ id: meeting_id });
 
     if(!meeting) {
+      console.info("[APPOINTMENT-CONTROLLER] -> ", "Meeting not found!");
       return response.status(404).json("Meeting not found!");
     }
 
@@ -103,6 +110,7 @@ export default class AppointmentController {
     const appointment = await appointmentRepo.findOne({ id });
 
     if(!appointment) {
+      console.info("[APPOINTMENT-CONTROLLER] -> ", "Appointment not found!");
       return response.status(404).json("Appointment not found!");
     }
 

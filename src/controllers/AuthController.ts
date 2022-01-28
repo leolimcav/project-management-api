@@ -15,18 +15,20 @@ export default class AuthController {
   public async send(request: Request, response: Response) {
     const { email, password } = request.body;
     const administratorRepo = getRepository(Administrator);
-
     const administrator = await administratorRepo.findOne({ email });
 
     if(!email || !password) {
+      console.info("[AUTH-CONTROLLER] -> ", "Email/Password is empty!");
       return response.status(400).json("Email/Password is empty!");
     }
 
     if(!administrator) {
+      console.info("[AUTH-CONTROLLER] -> ", "Administrator not found!");
       return response.status(404).json("Administrator not found!");
     }
 
-    if(administrator.password !== password) {
+    if(administrator.email !== email || administrator.password !== password) {
+      console.info("[AUTH-CONTROLLER] -> ", "Email/Password are incorrect!");
       return response.status(400).json("Email/Password are incorrect!");
     }
 

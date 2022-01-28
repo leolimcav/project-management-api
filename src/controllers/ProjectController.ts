@@ -28,6 +28,7 @@ export default class ProjectController {
     });
 
     if(!project) {
+      console.info("[PROJECT-CONTROLLER] -> ", "Project not found!");
       return response.status(404).json("Project not found!");
     }
 
@@ -53,19 +54,21 @@ export default class ProjectController {
 
     if(!name || !start_date || !field || !administrator_id || !student_id) {
       const fieldName = !name ? "name" : !start_date ? "start_date" : !field ? "field" : !administrator_id ? "administrator_id" : "student_id";
-
+      console.info("[PROJECT-CONTROLLER] -> ", `The field ${fieldName} is empty`);
       return response.status(404).json(`The field ${fieldName} is empty`);
     }
 
     const administrator = await administratorRepo.findOne({ id: administrator_id });
 
     if(!administrator) {
+      console.info("[PROJECT-CONTROLLER] -> ", "Administrator not found!");
       return response.status(404).json("Administrator not found!");
     }
 
     const student = await studentRepo.findOne({ id: student_id });
 
     if(!student) {
+      console.info("[PROJECT-CONTROLLER] -> ", "Student not found!");
       return response.status(404).json("Student not found!");
     }
 
@@ -97,19 +100,21 @@ export default class ProjectController {
 
     if(!name || !start_date || !field || !student_id) {
       const fieldName = !name ? "name" : !start_date ? "start_date" : !field ? "field" : "student_id";
-
+      console.info("[PROJECT-CONTROLLER] -> ", `The field ${fieldName} is empty`);
       return response.status(404).json(`The field ${fieldName} is empty`);
     }
 
     const project = await projectRepo.findOne({ id });
 
     if(!project) {
+      console.info("[PROJECT-CONTROLLER] -> ", "Project not found!");
       return response.status(404).json("Project not found!");
     }
 
     const student = await studentRepo.findOne({ id: student_id });
 
     if(!student) {
+      console.info("[PROJECT-CONTROLLER] -> ", "Student not found!");
       return response.status(404).json("Student not found!");
     }
 
@@ -135,6 +140,7 @@ export default class ProjectController {
     const project = await projectRepo.findOne({ id });
 
     if(!project) {
+      console.info("[PROJECT-CONTROLLER] -> ", "Project not found!");
       return response.status(404).json("Project not found!");
     }
 

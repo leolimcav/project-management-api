@@ -19,6 +19,7 @@ export default class AdministratorController {
     const administrator = await administratorRepo.findOne({ id });
 
     if(!administrator) {
+      console.info("[ADMINISTRATOR-CONTROLLER] -> ", "Administrator not found!");
       return response.status(404).json("Administrator not found!");
     }
 

@@ -28,6 +28,7 @@ export default class MeetingController {
     });
 
     if(!meeting) {
+      console.info("[MEETING-CONTROLLER] -> ", "Meeting not found!");
       return response.status(404).json("Meeting not found!");
     }
 
@@ -43,18 +44,21 @@ export default class MeetingController {
 
     if(!title || !status || !administrator_id || !partner_id) {
       const fieldName = !title ? "title" : !status ? "status": !administrator_id ? "administrator_id" : "partner_id";
+      console.info("[MEETING-CONTROLLER] -> ", `The field ${fieldName} is empty!`);
       return response.status(400).json(`The field ${fieldName} is empty!`);
     }
 
     const partner = await partnerRepo.findOne({ id: partner_id });
 
     if(!partner) {
+      console.info("[MEETING-CONTROLLER] -> ", "Partner not found!");
       return response.status(400).json("Partner not found!");
     }
 
     const administrator = await administratorRepo.findOne({ id: administrator_id });
 
     if(!administrator) {
+      console.info("[MEETING-CONTROLLER] -> ", "Administrator not found!");
       return response.status(404).json("Administrator not found!");
     }
 
@@ -85,29 +89,32 @@ export default class MeetingController {
     const studentRepo = getRepository(Student);
     const partnerRepo = getRepository(Partner);
 
-    if(!title || !link || !partner_id) {
+    if(!title || !status || !partner_id) {
       const fieldName = !title ? "title" : !status ? "status": "partner_id";
+      console.info("[MEETING-CONTROLLER] -> ", `The field ${fieldName} is empty!`);
       return response.status(400).json(`The field ${fieldName} is empty!`);
     }
 
     const partner = await partnerRepo.findOne({ id: partner_id });
 
     if(!partner) {
+      console.info("[MEETING-CONTROLLER] -> ", "Partner not found!");
       return response.status(400).json("Partner not found!");
     }
 
     const meeting = await meetingRepo.findOne({ id });
 
     if(!meeting) {
+      console.info("[MEETING-CONTROLLER] -> ", "Meeting not found!");
       return response.status(400).json("Meeting not found!");
     }
 
     const student = await studentRepo.findOne({ id: student_id });
 
     meeting.title = title ? title : meeting.title;
-    meeting.link = link ? link : meeting.link;
+    meeting.link = link ? link : null;
     meeting.status = status ? status : meeting.status;
-    meeting.student = student ? student : meeting.student;
+    meeting.student = student ? student : null;
     meeting.partner = partner ? partner : meeting.partner;
 
     await meetingRepo.save(meeting);
@@ -121,6 +128,7 @@ export default class MeetingController {
     const meeting = await meetingRepo.findOne({ id });
 
     if(!meeting) {
+      console.info("[MEETING-CONTROLLER] -> ", "Meeting not found!");
       return response.status(404).json("Meeting not found!");
     }
 

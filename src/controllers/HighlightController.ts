@@ -27,6 +27,7 @@ export default class HighlightController {
     });
 
     if(!highlight) {
+      console.info("[HIGHLIGHT-CONTROLLER] -> ", "Highlight not found!");
       return response.status(404).json("Highlight not found!");
     }
 
@@ -41,19 +42,21 @@ export default class HighlightController {
 
     if(!end_date || !administrator_id || !project_id) {
       const fieldName = !end_date ? "end_date" : !administrator_id ? "administrator_id" : "project_id";
-
+      console.info("[HIGHLIGHT-CONTROLLER] -> ", `The field ${fieldName} is empty!`);
       return response.status(400).json(`The field ${fieldName} is empty!`);
     }
 
     const administrator = await administratorRepo.findOne({ id: administrator_id });
 
     if(!administrator) {
+      console.info("[HIGHLIGHT-CONTROLLER] -> ", "Administrator not found!");
       return response.status(404).json("Administrator not found!");
     }
 
     const project = await projectRepo.findOne({ id: project_id });
 
     if(!project) {
+      console.info("[HIGHLIGHT-CONTROLLER] -> ", "Project not found!");
       return response.status(404).json("Project not found!");
     }
 
@@ -73,6 +76,7 @@ export default class HighlightController {
     const highlight = await highlightRepo.findOne({ id });
 
     if(!highlight) {
+      console.info("[HIGHLIGHT-CONTROLLER] -> ", "Highlight not found!");
       return response.status(404).json("Highlight not found!");
     }
 

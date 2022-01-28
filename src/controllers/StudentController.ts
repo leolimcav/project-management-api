@@ -30,6 +30,7 @@ export default class StudentController {
     const student = await studentRepo.findOne({ id });
 
     if(!student) {
+      console.info("[STUDENT-CONTROLLER] -> ", "Student not found!");
       return response.status(404).json("Student not found!");
     }
 
@@ -43,18 +44,21 @@ export default class StudentController {
 
     if(!name || !email || !phone_number || !administrator_id) {
       const fieldName = !name ? "name" : !email ? "email": !phone_number ? "phone_number" : "administrator_id";
+      console.info("[STUDENT-CONTROLLER] -> ", `The field ${fieldName} is empty!`);
       return response.status(400).json(`The field ${fieldName} is empty!`);
     }
 
     const emailAlreadyInUse = await studentRepo.findOne({ email });
 
     if(emailAlreadyInUse) {
+      console.info("[STUDENT-CONTROLLER] -> ", "Email already in use!");
       return response.status(400).json("Email already in use!");
     }
 
     const administrator = await administratorRepo.findOne({ id: administrator_id });
 
     if(!administrator) {
+      console.info("[STUDENT-CONTROLLER] -> ", "Administrator not found!");
       return response.status(400).json("Administrator not found!");
     }
 
@@ -77,12 +81,14 @@ export default class StudentController {
 
     if(!name || !email || !phone_number) {
       const fieldName = !name ? "name" : !email ? "email": "phone_number";
+      console.info("[STUDENT-CONTROLLER] -> ", `The field ${fieldName} is empty!`);
       return response.status(400).json(`The field ${fieldName} is empty!`);
     }
 
     const student = await studentRepo.findOne({ id });
 
     if(!student) {
+      console.info("[STUDENT-CONTROLLER] -> ", "Student not found!");
       return response.status(404).json("Student not found!");
     }
 
@@ -102,6 +108,7 @@ export default class StudentController {
     const student = await studentRepo.findOne({ id });
 
     if(!student) {
+      console.info("[STUDENT-CONTROLLER] -> ", "Student not found!");
       return response.status(404).json("Student not found!");
     }
 
