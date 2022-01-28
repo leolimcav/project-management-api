@@ -23,12 +23,14 @@ export default class AppointmentController {
     const appointmentRepo = getRepository(Appointment);
 
     const appointment = await appointmentRepo.findOne({ id }, {
-      relations: ["administrator", "meeting"]
+      relations: ["administrator", "meeting", "meeting.student", "meeting.partner"]
     });
 
     if(!appointment) {
       return response.status(404).json("Appointment not found!");
     }
+
+    return response.status(200).json(appointment);
   }
 
   async create(request: Request, response: Response) {
