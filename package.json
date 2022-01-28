@@ -2,7 +2,7 @@
   "name": "backend-michelle",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
+  "type": "commonjs",
   "license": "MIT",
   "engines": {
     "node": "16.x"
