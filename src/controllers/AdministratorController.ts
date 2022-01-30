@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import Administrator from "src/models/Administrator";
 import { container} from "tsyringe";
 
-import AdministratorService from "../services/AdministratorService";
+import AdministratorService from "@services/AdministratorService";
 
 type ResponseData = {
   id?: string;

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { getRepository, Repository } from "typeorm";
-import Administrator from "../models/Administrator";
-import Appointment from "../models/Appointment";
-import Meeting from "../models/Meeting";
+import Administrator from "@models/models/Administrator";
+import Appointment from "@models/models/Appointment";
+import Meeting from "@models/models/Meeting";
 
 export default class AppointmentController {
   private readonly appointmentRepo: Repository<Appointment>;

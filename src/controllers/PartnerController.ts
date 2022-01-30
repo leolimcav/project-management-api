@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { getRepository, Repository } from "typeorm";
-import Administrator from "../models/Administrator";
-import Company from "../models/Company";
-import Partner from "../models/Partner";
+import Administrator from "@models/Administrator";
+import Company from "@models/Company";
+import Partner from "@models/Partner";
 
 export default class PartnerController {
   private readonly administratorRepo: Repository<Administrator>;

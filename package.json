@@ -2,7 +2,7 @@
   "name": "backend-michelle",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
+  "type": "commonjs",
   "license": "MIT",
   "engines": {
     "node": "16.x"
@@ -43,7 +43,7 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "dev": "ts-node-dev --inspect --respawn --transpile-only --ignore-watch node_modules src/server.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --respawn --transpile-only --ignore-watch node_modules src/server.ts",
     "start": "node dist/src/server.js",
     "build": "rm -rf dist/ && tsc",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"

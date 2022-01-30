@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import { container } from 'tsyringe';
 
-import AdministratorController from '../controllers/AdministratorController';
+import AdministratorController from '@controllers/AdministratorController';
 
 const administratorRoutes = Router();
 const administratorController = new AdministratorController();

@@ -1,8 +1,8 @@
 import { injectable, inject } from "tsyringe";
 
-import Administrator from "src/models/Administrator";
-import IAdministratorRepository from "../interfaces/IAdministratorRepository";
-import AppError from "../errors/AppError";
+import Administrator from "@models/Administrator";
+import IAdministratorRepository from "@interfaces/IAdministratorRepository";
+import AppError from "@errors/AppError";
 
 
 @injectable()

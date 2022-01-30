@@ -1,14 +1,13 @@
 import 'reflect-metadata';
 import express, {json, NextFunction, Request, Response} from 'express';
 import 'express-async-errors';
-
-import './database';
-import './config/DependencyInjectionResolver';
 import cors from 'cors';
 import {config as envConfig} from 'dotenv';
-import routes from './routes';
 
-import AppError from './errors/AppError';
+import './database';
+import './configs/DependencyInjectionResolver';
+import routes from './routes';
+import AppError from '@errors/AppError';
 
 envConfig();
 

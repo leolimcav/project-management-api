@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { getRepository, Repository } from "typeorm";
-import Administrator from "../models/Administrator";
-import Highlight from "../models/Highlight";
-import Project from "../models/Projects";
+import Administrator from "@models/Administrator";
+import Highlight from "@models/Highlight";
+import Project from "@models/Projects";
 
 export default class HighlightController {
   private readonly administratorRepo: Repository<Administrator>;

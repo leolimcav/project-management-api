@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { getRepository, Repository } from "typeorm";
-import Administrator from "../models/Administrator";
-import Partner from "../models/Partner";
-import Project from "../models/Projects";
-import Student from "../models/Student";
+import Administrator from "@models/Administrator";
+import Partner from "@models/Partner";
+import Project from "@models/Projects";
+import Student from "@models/Student";
 
 export default class ProjectController {
   private readonly administratorRepo: Repository<Administrator>;
