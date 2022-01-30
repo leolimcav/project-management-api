@@ -20,7 +20,7 @@ export default class AdministratorController {
 
     const administratorService = container.resolve(AdministratorService);
 
-    const administrator = await administratorService.getOneById({ id });
+    const administrator = await administratorService.getOneById(id);
 
     const result: ResponseData = Object.assign(administrator || {});
 

@@ -4,9 +4,6 @@ import Administrator from "src/models/Administrator";
 import IAdministratorRepository from "../interfaces/IAdministratorRepository";
 import AppError from "../errors/AppError";
 
-type Request = {
-  id: string
-}
 
 @injectable()
 export default class AdministratorService {
@@ -15,7 +12,7 @@ export default class AdministratorService {
     private readonly administratorRepo: IAdministratorRepository
   ){}
 
-  async getOneById({ id }: Request): Promise<Administrator | undefined> {
+  async getOneById(id: string): Promise<Administrator | undefined> {
     const administrator = await this.administratorRepo.findOne({ id });
 
     if(!administrator) {
