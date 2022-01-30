@@ -1,5 +1,5 @@
 import Administrator from "../models/Administrator";
-import { getRepository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 import { Request, Response } from "express";
 
 type ResponseData = {
@@ -12,10 +12,13 @@ type ResponseData = {
 }
 
 export default class AuthController {
+  private readonly administratorRepo: Repository<Administrator>;
+  constructor() {
+    this.administratorRepo = getRepository(Administrator);
+  }
   public async send(request: Request, response: Response) {
     const { email, password } = request.body;
-    const administratorRepo = getRepository(Administrator);
-    const administrator = await administratorRepo.findOne({ email });
+    const administrator = await this.administratorRepo.findOne({ email });
 
     if(!email || !password) {
       console.info("[AUTH-CONTROLLER] -> ", "Email/Password is empty!");

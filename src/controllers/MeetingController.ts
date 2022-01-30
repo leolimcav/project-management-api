@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 import { v4 as uuid } from 'uuid';
 import Administrator from "../models/Administrator";
 import Student from "../models/Student";
@@ -7,9 +7,19 @@ import Partner from "../models/Partner";
 import Meeting from "../models/Meeting";
 
 export default class MeetingController {
+  private readonly administratorRepo: Repository<Administrator>;
+  private readonly studentRepo: Repository<Student>;
+  private readonly partnerRepo: Repository<Partner>;
+  private readonly meetingRepo: Repository<Meeting>;
+
+  constructor() {
+    this.administratorRepo = getRepository(Administrator);
+    this.studentRepo = getRepository(Student);
+    this.partnerRepo = getRepository(Partner);
+    this.meetingRepo = getRepository(Meeting);
+  }
   async index(request: Request, response: Response) {
-    const meetingRepo = getRepository(Meeting);
-    const [meetings, count] = await meetingRepo.findAndCount({
+    const [meetings, count] = await this.meetingRepo.findAndCount({
       order: {
         created_at: "DESC"
       },
@@ -21,9 +31,8 @@ export default class MeetingController {
 
   async retrieve(request: Request, response: Response) {
     const { id } = request.params;
-    const meetingRepo = getRepository(Meeting);
 
-    const meeting = await meetingRepo.findOne({ id }, {
+    const meeting = await this.meetingRepo.findOne({ id }, {
       relations: ["administrator", "student", "partner"]
     });
 
@@ -32,15 +41,11 @@ export default class MeetingController {
       return response.status(404).json("Meeting not found!");
     }
 
-    return response.status(200).json(Meeting);
+    return response.status(200).json(meeting);
   }
 
   async create(request: Request, response: Response) {
     const { title, link, status, administrator_id, student_id, partner_id } = request.body;
-    const meetingRepo = getRepository(Meeting);
-    const administratorRepo = getRepository(Administrator);
-    const studentRepo = getRepository(Student);
-    const partnerRepo = getRepository(Partner);
 
     if(!title || !status || !administrator_id || !partner_id) {
       const fieldName = !title ? "title" : !status ? "status": !administrator_id ? "administrator_id" : "partner_id";
@@ -48,23 +53,23 @@ export default class MeetingController {
       return response.status(400).json(`The field ${fieldName} is empty!`);
     }
 
-    const partner = await partnerRepo.findOne({ id: partner_id });
+    const partner = await this.partnerRepo.findOne({ id: partner_id });
 
     if(!partner) {
       console.info("[MEETING-CONTROLLER] -> ", "Partner not found!");
       return response.status(400).json("Partner not found!");
     }
 
-    const administrator = await administratorRepo.findOne({ id: administrator_id });
+    const administrator = await this.administratorRepo.findOne({ id: administrator_id });
 
     if(!administrator) {
       console.info("[MEETING-CONTROLLER] -> ", "Administrator not found!");
       return response.status(404).json("Administrator not found!");
     }
 
-    const student = await studentRepo.findOne({ id: student_id });
+    const student = await this.studentRepo.findOne({ id: student_id });
 
-    const meeting = meetingRepo.create({
+    const meeting = this.meetingRepo.create({
       id: uuid(),
       title,
       link,
@@ -75,9 +80,8 @@ export default class MeetingController {
     });
 
 
-    await meetingRepo.save(meeting);
+    await this.meetingRepo.save(meeting);
 
-    delete meeting.administrator.password;
 
     return response.status(200).json(meeting);
   }
@@ -85,9 +89,6 @@ export default class MeetingController {
   async update(request: Request, response: Response) {
     const { id } = request.params;
     const { title, link, status, student_id, partner_id } = request.body;
-    const meetingRepo = getRepository(Meeting);
-    const studentRepo = getRepository(Student);
-    const partnerRepo = getRepository(Partner);
 
     if(!title || !status || !partner_id) {
       const fieldName = !title ? "title" : !status ? "status": "partner_id";
@@ -95,44 +96,43 @@ export default class MeetingController {
       return response.status(400).json(`The field ${fieldName} is empty!`);
     }
 
-    const partner = await partnerRepo.findOne({ id: partner_id });
+    const partner = await this.partnerRepo.findOne({ id: partner_id });
 
     if(!partner) {
       console.info("[MEETING-CONTROLLER] -> ", "Partner not found!");
       return response.status(400).json("Partner not found!");
     }
 
-    const meeting = await meetingRepo.findOne({ id });
+    const meeting = await this.meetingRepo.findOne({ id });
 
     if(!meeting) {
       console.info("[MEETING-CONTROLLER] -> ", "Meeting not found!");
       return response.status(400).json("Meeting not found!");
     }
 
-    const student = await studentRepo.findOne({ id: student_id });
+    const student = await this.studentRepo.findOne({ id: student_id });
 
     meeting.title = title ? title : meeting.title;
-    meeting.link = link ? link : null;
+    meeting.link = link ? link : undefined;
     meeting.status = status ? status : meeting.status;
-    meeting.student = student ? student : null;
+    meeting.student = student ? student : undefined;
     meeting.partner = partner ? partner : meeting.partner;
 
-    await meetingRepo.save(meeting);
+    await this.meetingRepo.save(meeting);
 
     return response.status(200).json("Meeting updated successfully!");
   }
   async delete(request: Request, response: Response) {
     const { id } = request.params;
-    const meetingRepo = getRepository(Meeting);
 
-    const meeting = await meetingRepo.findOne({ id });
+    const meeting = await this.meetingRepo.findOne({ id });
 
     if(!meeting) {
       console.info("[MEETING-CONTROLLER] -> ", "Meeting not found!");
       return response.status(404).json("Meeting not found!");
     }
 
-    await meetingRepo.remove([meeting]);
+    await this.meetingRepo.remove([meeting]);
 
     return response.status(204).end();
   }

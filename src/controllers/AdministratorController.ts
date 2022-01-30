@@ -1,36 +1,28 @@
-import Administrator from "../models/Administrator";
-import { getRepository } from "typeorm";
 import { Request, Response } from "express";
+import Administrator from "src/models/Administrator";
+import { container} from "tsyringe";
+
+import AdministratorService from "../services/AdministratorService";
 
 type ResponseData = {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  created_at: Date;
-  updated_at: Date;
+  id?: string;
+  name?: string;
+  email?: string;
+  role?: string;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
+
 export default class AdministratorController {
-  public async retrive(request: Request, response: Response) {
+  public async retrieve(request: Request, response: Response) {
     const { id } = request.params;
-    const administratorRepo = getRepository(Administrator);
 
-    const administrator = await administratorRepo.findOne({ id });
+    const administratorService = container.resolve(AdministratorService);
 
-    if(!administrator) {
-      console.info("[ADMINISTRATOR-CONTROLLER] -> ", "Administrator not found!");
-      return response.status(404).json("Administrator not found!");
-    }
+    const administrator = await administratorService.getOneById({ id });
 
-    const result: ResponseData = {
-      id: administrator.id,
-      name: administrator.name,
-      email: administrator.email,
-      role: administrator.role,
-      created_at: administrator.created_at,
-      updated_at: administrator.updated_at
-    };
+    const result: ResponseData = Object.assign(administrator || {});
 
     return response.status(200).json(result);
   }

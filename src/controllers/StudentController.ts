@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 import Administrator from "../models/Administrator";
 import Student from "../models/Student";
 
@@ -9,10 +9,15 @@ type ResponseData = {
 }
 
 export default class StudentController {
-  async index(request: Request, response: Response) {
-    const studentRepo = getRepository(Student);
+  private readonly administratorRepo: Repository<Administrator>;
+  private readonly studentRepo: Repository<Student>;
 
-    const [students, count] = await studentRepo.findAndCount({
+  constructor() {
+    this.administratorRepo = getRepository(Administrator);
+    this.studentRepo = getRepository(Student);
+  }
+  async index(request: Request, response: Response) {
+    const [students, count] = await this.studentRepo.findAndCount({
       order: {
         created_at: "DESC"
       }
@@ -25,9 +30,8 @@ export default class StudentController {
 
   async retrieve(request: Request, response: Response) {
     const { id } = request.params;
-    const studentRepo = getRepository(Student);
 
-    const student = await studentRepo.findOne({ id });
+    const student = await this.studentRepo.findOne({ id });
 
     if(!student) {
       console.info("[STUDENT-CONTROLLER] -> ", "Student not found!");
@@ -39,8 +43,6 @@ export default class StudentController {
 
   async create(request: Request, response: Response) {
     const { name, email, phone_number, administrator_id } = request.body;
-    const studentRepo = getRepository(Student);
-    const administratorRepo = getRepository(Administrator);
 
     if(!name || !email || !phone_number || !administrator_id) {
       const fieldName = !name ? "name" : !email ? "email": !phone_number ? "phone_number" : "administrator_id";
@@ -48,28 +50,26 @@ export default class StudentController {
       return response.status(400).json(`The field ${fieldName} is empty!`);
     }
 
-    const emailAlreadyInUse = await studentRepo.findOne({ email });
+    const emailAlreadyInUse = await this.studentRepo.findOne({ email });
 
     if(emailAlreadyInUse) {
       console.info("[STUDENT-CONTROLLER] -> ", "Email already in use!");
       return response.status(400).json("Email already in use!");
     }
 
-    const administrator = await administratorRepo.findOne({ id: administrator_id });
+    const administrator = await this.administratorRepo.findOne({ id: administrator_id });
 
     if(!administrator) {
       console.info("[STUDENT-CONTROLLER] -> ", "Administrator not found!");
       return response.status(400).json("Administrator not found!");
     }
 
-    const createdStudent = await studentRepo.save({
+    const createdStudent = await this.studentRepo.save({
       administrator,
       email,
       name,
       phone_number
     });
-
-    delete createdStudent.administrator.password;
 
     return response.status(201).json(createdStudent);
   }
@@ -77,7 +77,6 @@ export default class StudentController {
   async update(request: Request, response: Response) {
     const { id } = request.params;
     const { name, email, phone_number } = request.body;
-    const studentRepo = getRepository(Student);
 
     if(!name || !email || !phone_number) {
       const fieldName = !name ? "name" : !email ? "email": "phone_number";
@@ -85,7 +84,7 @@ export default class StudentController {
       return response.status(400).json(`The field ${fieldName} is empty!`);
     }
 
-    const student = await studentRepo.findOne({ id });
+    const student = await this.studentRepo.findOne({ id });
 
     if(!student) {
       console.info("[STUDENT-CONTROLLER] -> ", "Student not found!");
@@ -96,23 +95,22 @@ export default class StudentController {
     student.email = email ? email : student.email;
     student.phone_number = phone_number ? phone_number : student.phone_number;
 
-    await studentRepo.save(student);
+    await this.studentRepo.save(student);
 
     return response.status(200).json("Student updated successfully!");
   }
 
   async delete(request: Request, response: Response) {
     const { id } = request.params;
-    const studentRepo = getRepository(Student);
 
-    const student = await studentRepo.findOne({ id });
+    const student = await this.studentRepo.findOne({ id });
 
     if(!student) {
       console.info("[STUDENT-CONTROLLER] -> ", "Student not found!");
       return response.status(404).json("Student not found!");
     }
 
-    await studentRepo.remove([student]);
+    await this.studentRepo.remove([student]);
 
     return response.status(204).end();
   }

@@ -56,14 +56,14 @@ routes.get("/", (req, res) => {
 });
 
 routes.use(AdministratorRoutes);
-routes.use(AuthRoutes);
-routes.use(StudentRoutes);
-routes.use(CompanyRoutes);
-routes.use(PartnerRoutes);
-routes.use(AppointmentRoutes);
-routes.use(ProjectRoutes);
-routes.use(MeetingRoutes);
-routes.use(HighlightRoutes);
+// routes.use(AuthRoutes);
+// routes.use(StudentRoutes);
+// routes.use(CompanyRoutes);
+// routes.use(PartnerRoutes);
+// routes.use(AppointmentRoutes);
+// routes.use(ProjectRoutes);
+// routes.use(MeetingRoutes);
+// routes.use(HighlightRoutes);
 
 
 export default routes;

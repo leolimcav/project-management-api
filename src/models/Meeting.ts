@@ -12,7 +12,7 @@ export default class Meeting {
   title: string;
 
   @Column()
-  link: string;
+  link?: string;
 
   @Column()
   status: string;
@@ -23,7 +23,7 @@ export default class Meeting {
 
   @ManyToOne(() => Student)
   @JoinColumn({ name: "student_id" })
-  student: Student
+  student?: Student
 
   @ManyToOne(() => Partner)
   @JoinColumn({ name: "partner_id" })

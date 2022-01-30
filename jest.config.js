@@ -3,12 +3,12 @@
  * https://jestjs.io/docs/configuration
  */
 
-export default {
+module.exports = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
   // Stop running tests after `n` failures
-  // bail: 0,
+  bail: true,
 
   // The directory where Jest should store its cached dependency information
   // cacheDirectory: "/tmp/jest_rs",
@@ -118,12 +118,12 @@ export default {
   // restoreMocks: false,
 
   // The root directory that Jest should scan for tests and modules within
-  // rootDir: undefined,
+  // rootDir: "./",
 
   // A list of paths to directories that Jest should use to search for files in
-  roots: [
-    "<rootDir>"
-  ],
+  // roots: [
+  //   "<rootDir>"
+  // ],
 
   // Allows you to use a custom runner instead of Jest's default test runner
   // runner: "jest-runner",
@@ -190,7 +190,7 @@ export default {
   // unmockedModulePathPatterns: undefined,
 
   // Indicates whether each individual test should be reported during the run
-  // verbose: undefined,
+  verbose: true,
 
   // An array of regexp patterns that are matched against all source file paths before re-running tests in watch mode
   // watchPathIgnorePatterns: [],

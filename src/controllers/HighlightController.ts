@@ -1,14 +1,21 @@
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 import Administrator from "../models/Administrator";
 import Highlight from "../models/Highlight";
 import Project from "../models/Projects";
 
 export default class HighlightController {
-  async index(request: Request, response: Response) {
-    const highlightRepo = getRepository(Highlight);
+  private readonly administratorRepo: Repository<Administrator>;
+  private readonly highlightRepo: Repository<Highlight>;
+  private readonly projectRepo: Repository<Project>;
 
-    const [highlights, count] = await highlightRepo.findAndCount({
+  constructor() {
+    this.administratorRepo = getRepository(Administrator);
+    this.highlightRepo = getRepository(Highlight);
+    this.projectRepo = getRepository(Project);
+  }
+  async index(request: Request, response: Response) {
+    const [highlights, count] = await this.highlightRepo.findAndCount({
       order: {
         created_at: "DESC"
       },
@@ -20,9 +27,8 @@ export default class HighlightController {
 
   async retrieve(request: Request, response: Response) {
     const { id } = request.params;
-    const highlightRepo = getRepository(Highlight);
 
-    const highlight = await highlightRepo.findOne({ id }, {
+    const highlight = await this.highlightRepo.findOne({ id }, {
       relations: ["project", "project.student"]
     });
 
@@ -36,9 +42,6 @@ export default class HighlightController {
 
   async create(request: Request, response: Response) {
     const { end_date, administrator_id, project_id } = request.body;
-    const highlightRepo = getRepository(Highlight);
-    const administratorRepo = getRepository(Administrator);
-    const projectRepo = getRepository(Project);
 
     if(!end_date || !administrator_id || !project_id) {
       const fieldName = !end_date ? "end_date" : !administrator_id ? "administrator_id" : "project_id";
@@ -46,21 +49,21 @@ export default class HighlightController {
       return response.status(400).json(`The field ${fieldName} is empty!`);
     }
 
-    const administrator = await administratorRepo.findOne({ id: administrator_id });
+    const administrator = await this.administratorRepo.findOne({ id: administrator_id });
 
     if(!administrator) {
       console.info("[HIGHLIGHT-CONTROLLER] -> ", "Administrator not found!");
       return response.status(404).json("Administrator not found!");
     }
 
-    const project = await projectRepo.findOne({ id: project_id });
+    const project = await this.projectRepo.findOne({ id: project_id });
 
     if(!project) {
       console.info("[HIGHLIGHT-CONTROLLER] -> ", "Project not found!");
       return response.status(404).json("Project not found!");
     }
 
-    const highlight = await highlightRepo.save({
+    const highlight = await this.highlightRepo.save({
       end_date,
       administrator,
       project
@@ -71,16 +74,15 @@ export default class HighlightController {
 
   async delete(request: Request, response: Response) {
     const { id } = request.params;
-    const highlightRepo = getRepository(Highlight);
 
-    const highlight = await highlightRepo.findOne({ id });
+    const highlight = await this.highlightRepo.findOne({ id });
 
     if(!highlight) {
       console.info("[HIGHLIGHT-CONTROLLER] -> ", "Highlight not found!");
       return response.status(404).json("Highlight not found!");
     }
 
-    await highlightRepo.remove(highlight);
+    await this.highlightRepo.remove(highlight);
 
     return response.status(204).end();
   }
