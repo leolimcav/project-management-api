@@ -8,6 +8,9 @@ module.exports = {
     "./src/**/*.{ts,tsx,js,jsx}",
     "!**/node_modules/**",
     "!**/build/**",
+    "!./src/configs/*.ts",
+    "!./src/database/**/*.ts",
+    "!./src/routes/*.ts",
   ],
   coverageProvider: "v8",
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
@@ -21,7 +24,7 @@ module.exports = {
   testPathIgnorePatterns: [
     "node_modules",
     "build",
-    "dist",
+    "dist"
   ],
   verbose: true,
   setupFilesAfterEnv: ["./jest.setup.ts"]
