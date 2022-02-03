@@ -1,10 +1,20 @@
-import IAdministratorRepository from "@interfaces/IAdministratorRepository";
+import ICreateAdministratorDTO from "@interfaces/dto/ICreateAdministratorDTO";
+import IAdministratorRepository from "@interfaces/repository/IAdministratorRepository";
 import Administrator from "@models/Administrator";
-import { FindCondition, FindOneOptions } from "typeorm";
+import { buildAdministratorMock } from "@tests/utils/ObjectBuilders";
 
 export class AdministratorRepositorySpy implements IAdministratorRepository {
-  findOne(conditions?: Administrator | { id?: FindCondition<string> | undefined; name?: FindCondition<string> | undefined; email?: FindCondition<string> | undefined; role?: FindCondition<string> | undefined; password?: FindCondition<string> | undefined; created_at?: FindCondition<Date> | undefined; updated_at?: FindCondition<Date> | undefined; }, options?: FindOneOptions<Administrator | undefined>): Promise<Administrator | undefined> {
-    throw new Error("Method not implemented.");
+  async findOneById(id: string): Promise<Administrator | undefined> {
+    if (id) {
+      return buildAdministratorMock();
+    }
+    return undefined;
   }
 
+  async save(entity: ICreateAdministratorDTO): Promise<Administrator> {
+    const createdAdmin = buildAdministratorMock();
+    Object.assign(createdAdmin, entity);
+
+    return createdAdmin;
+  }
 }

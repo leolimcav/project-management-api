@@ -1,4 +1,4 @@
-import Administrator from "@models/Administrator"
+import Administrator from "@models/Administrator";
 
 export const buildAdministratorMock = () => {
   const administrator = new Administrator();
@@ -9,8 +9,8 @@ export const buildAdministratorMock = () => {
     password: "password",
     role: "role",
     created_at: new Date(),
-    updated_at: new Date
+    updated_at: new Date(),
   });
 
   return administrator;
-}
+};
