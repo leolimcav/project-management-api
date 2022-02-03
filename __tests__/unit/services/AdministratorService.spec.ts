@@ -1,3 +1,5 @@
+import bcrypt from "bcrypt";
+
 import AdministratorService from "@services/AdministratorService";
 import { buildAdministratorMock } from "@tests/utils/ObjectBuilders";
 import { AdministratorRepositorySpy } from "@tests/spies/AdministratorRepositoryMock";
@@ -67,5 +69,20 @@ describe("AdministratorService", () => {
     expect(result).toHaveProperty("id");
     expect(result.id).toBe("valid_uuid");
     expect(result).toBeInstanceOf(Administrator);
+  });
+
+  it("Should encrypt password before the creation of the administrator", async () => {
+    const administratorRepositorySpy = new AdministratorRepositorySpy();
+    const payload: ICreateAdministratorDTO = {
+      name: "John Doe",
+      email: "jDoe@email.com",
+      password: "randompassword",
+      role: "Administrator",
+    };
+    const spy = jest.spyOn(bcrypt, "hash");
+    const sut = new AdministratorService(administratorRepositorySpy);
+
+    await sut.create(payload);
+    expect(spy).toBeCalled();
   });
 });

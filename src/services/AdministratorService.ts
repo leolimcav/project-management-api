@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { injectable, inject } from "tsyringe";
 
 import Administrator from "@models/Administrator";
@@ -27,10 +28,11 @@ export default class AdministratorService {
   }
 
   async create({ name, email, password, role }: ICreateAdministratorDTO) {
+    const passwordHash = await bcrypt.hash(password, 8);
     const administrator = this.administratorRepo.save({
       name,
       email,
-      password,
+      password: passwordHash,
       role,
     });
 
