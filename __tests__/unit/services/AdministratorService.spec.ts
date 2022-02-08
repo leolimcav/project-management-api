@@ -2,10 +2,10 @@ import bcrypt from "bcrypt";
 
 import AdministratorService from "@services/AdministratorService";
 import { buildAdministratorMock } from "@tests/utils/ObjectBuilders";
-import { AdministratorRepositorySpy } from "@tests/spies/AdministratorRepositoryMock";
 import Administrator from "@models/Administrator";
 import AppError from "@errors/AppError";
 import ICreateAdministratorDTO from "@interfaces/dto/ICreateAdministratorDTO";
+import { AdministratorRepositorySpy } from "@tests/spies/AdministratorRepositoryMock";
 
 describe("AdministratorService", () => {
   it("should get an administrator with the provided id", async () => {
@@ -84,5 +84,23 @@ describe("AdministratorService", () => {
 
     await sut.create(payload);
     expect(spy).toBeCalled();
+  });
+
+  it("Should not create an Administrator with an email that already exists", async () => {
+    const administratorRepositorySpy = new AdministratorRepositorySpy();
+    const payload: ICreateAdministratorDTO = {
+      name: "John Doe",
+      email: "validemail@email.com",
+      password: "randompassword",
+      role: "Administrator",
+    };
+
+    const sut = new AdministratorService(administratorRepositorySpy);
+
+    await expect(sut.create(payload)).rejects.toBeInstanceOf(AppError);
+    await expect(sut.create(payload)).rejects.toHaveProperty(
+      "message",
+      "Email already exists!"
+    );
   });
 });

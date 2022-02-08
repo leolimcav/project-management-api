@@ -11,6 +11,10 @@ export default class AdministratorRepository
     return getRepository(Administrator).findOne({ id });
   }
 
+  async findOneByEmail(email: string): Promise<Administrator | undefined> {
+    return getRepository(Administrator).findOne({ email });
+  }
+
   // async findAndCount(options?: FindManyOptions<Administrator | undefined>): Promise<[Administrator[], number]> {
   //   return await getRepository(Administrator).findAndCount(options);
   // }

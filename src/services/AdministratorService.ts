@@ -28,6 +28,14 @@ export default class AdministratorService {
   }
 
   async create({ name, email, password, role }: ICreateAdministratorDTO) {
+    const emailAlreadyExists = await this.administratorRepo.findOneByEmail(
+      email
+    );
+
+    if (emailAlreadyExists) {
+      throw new AppError("Email already exists!", 400);
+    }
+
     const passwordHash = await bcrypt.hash(password, 8);
     const administrator = this.administratorRepo.save({
       name,
