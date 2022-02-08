@@ -1,10 +1,10 @@
-import {MigrationInterface, QueryRunner, Table} from "typeorm";
+import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
 export class CreateAdministrators1643238771565 implements MigrationInterface {
-
-    public async up(queryRunner: QueryRunner): Promise<void> {
-      await queryRunner.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
-      await queryRunner.createTable(new Table({
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
+    await queryRunner.createTable(
+      new Table({
         name: "administrators",
         columns: [
           {
@@ -28,14 +28,14 @@ export class CreateAdministrators1643238771565 implements MigrationInterface {
             type: "varchar",
             isNullable: false,
             isUnique: true,
-            length: "255"
+            length: "255",
           },
           {
             name: "role",
             type: "varchar",
             length: "50",
             isNullable: false,
-            isUnique: false
+            isUnique: false,
           },
           {
             name: "password",
@@ -54,13 +54,13 @@ export class CreateAdministrators1643238771565 implements MigrationInterface {
             type: "timestamp",
             default: "now()",
             isNullable: false,
-          }
-        ]
-      }));
-    }
+          },
+        ],
+      })
+    );
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-      await queryRunner.dropTable("administrators");
-    }
-
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable("administrators");
+  }
 }

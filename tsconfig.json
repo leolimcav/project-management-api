@@ -22,7 +22,8 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "types": [
-      "@types/jest"
+      "@types/jest",
+      "@faker-js/faker"
     ],
     "paths": {
       "@models/*": [

@@ -11,11 +11,9 @@ describe("AdministratorService", () => {
   it("should get an administrator with the provided id", async () => {
     const administratorRepositorySpy = new AdministratorRepositorySpy();
     const id = "valid_uuid";
-    jest.spyOn(administratorRepositorySpy, "findOneById").mockReturnValue(
-      new Promise((resolve, _) => {
-        resolve(buildAdministratorMock());
-      })
-    );
+    jest
+      .spyOn(administratorRepositorySpy, "findOneById")
+      .mockResolvedValue(buildAdministratorMock());
     const sut = new AdministratorService(administratorRepositorySpy);
 
     const result = await sut.getOneById(id);
@@ -29,11 +27,9 @@ describe("AdministratorService", () => {
     const administratorRepositorySpy = new AdministratorRepositorySpy();
     const id = "invalid_uuid";
 
-    jest.spyOn(administratorRepositorySpy, "findOneById").mockReturnValue(
-      new Promise((resolve, _) => {
-        resolve(undefined);
-      })
-    );
+    jest
+      .spyOn(administratorRepositorySpy, "findOneById")
+      .mockResolvedValue(undefined);
 
     const sut = new AdministratorService(administratorRepositorySpy);
 
@@ -56,11 +52,9 @@ describe("AdministratorService", () => {
 
     Object.assign(createdAdministrator, payload);
 
-    jest.spyOn(administratorRepositorySpy, "save").mockReturnValue(
-      new Promise<Administrator>((resolve, _) => {
-        resolve(createdAdministrator);
-      })
-    );
+    jest
+      .spyOn(administratorRepositorySpy, "save")
+      .mockResolvedValue(createdAdministrator);
 
     const sut = new AdministratorService(administratorRepositorySpy);
 
@@ -101,6 +95,24 @@ describe("AdministratorService", () => {
     await expect(sut.create(payload)).rejects.toHaveProperty(
       "message",
       "Email already exists!"
+    );
+  });
+
+  it("Should throw an error if the any of the payload fields are empty in create", async () => {
+    const administratorRepositorySpy = new AdministratorRepositorySpy();
+    const payload: ICreateAdministratorDTO = {
+      name: "",
+      email: "",
+      password: "",
+      role: "",
+    };
+
+    const sut = new AdministratorService(administratorRepositorySpy);
+
+    await expect(sut.create(payload)).rejects.toBeInstanceOf(AppError);
+    await expect(sut.create(payload)).rejects.toHaveProperty(
+      "message",
+      "Field(s) are empty!"
     );
   });
 });

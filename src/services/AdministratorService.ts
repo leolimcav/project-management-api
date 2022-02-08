@@ -28,6 +28,10 @@ export default class AdministratorService {
   }
 
   async create({ name, email, password, role }: ICreateAdministratorDTO) {
+    if (!name || !email || !password || !role) {
+      throw new AppError("Field(s) are empty!", 400);
+    }
+
     const emailAlreadyExists = await this.administratorRepo.findOneByEmail(
       email
     );
