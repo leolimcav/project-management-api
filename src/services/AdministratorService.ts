@@ -17,11 +17,11 @@ export default class AdministratorService {
     const administrator = await this.administratorRepo.findOneById(id);
 
     if (!administrator) {
-      console.info(
-        "[ADMINISTRATOR-CONTROLLER] -> ",
-        "Administrator not found!"
+      throw new AppError(
+        "Administrator not found!",
+        404,
+        "ADMINISTRATOR-CONTROLLER"
       );
-      throw new AppError("Administrator not found!", 404);
     }
 
     return administrator;
