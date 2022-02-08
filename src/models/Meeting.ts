@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
-import Partner from "../models/Partner";
-import Student from "../models/Student";
+import Partner from "@models/Partner";
+import Student from "@models/Student";
 import Administrator from "./Administrator";
 
 @Entity("meetings")

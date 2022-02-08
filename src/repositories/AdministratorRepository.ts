@@ -1,21 +1,34 @@
-import IAdministratorRepository from "../interfaces/IAdministratorRepository";
-import Administrator from "../models/Administrator";
-import { FindOneOptions, FindManyOptions, SaveOptions, RemoveOptions, FindConditions, getRepository } from "typeorm";
+import { getRepository } from "typeorm";
 
-export default class AdministratorRepository implements IAdministratorRepository {
-  async findOne(conditions?: FindConditions<Administrator | undefined>, options?: FindOneOptions<Administrator | undefined>): Promise<Administrator | undefined> {
-    return await getRepository(Administrator).findOne(conditions, options);
+import IAdministratorRepository from "@interfaces/repository/IAdministratorRepository";
+import Administrator from "@models/Administrator";
+import ICreateAdministratorDTO from "@interfaces/dto/ICreateAdministratorDTO";
+
+export default class AdministratorRepository
+  implements IAdministratorRepository
+{
+  async findOneById(id: string): Promise<Administrator | undefined> {
+    return getRepository(Administrator).findOne({ id });
   }
 
-  async findAndCount(options?: FindManyOptions<Administrator | undefined>): Promise<[Administrator[], number]> {
-    return await getRepository(Administrator).findAndCount(options);
-  }
-  async save(entity: Administrator, options?: SaveOptions): Promise<Administrator> {
-    return await getRepository(Administrator).save(entity, options);
+  async findOneByEmail(email: string): Promise<Administrator | undefined> {
+    return getRepository(Administrator).findOne({ email });
   }
 
-  async remove(entity: Administrator, options?: RemoveOptions | undefined): Promise<Administrator> {
-    return await getRepository(Administrator).remove(entity, options);
+  // async findAndCount(options?: FindManyOptions<Administrator | undefined>): Promise<[Administrator[], number]> {
+  //   return await getRepository(Administrator).findAndCount(options);
+  // }
+
+  async save({
+    name,
+    email,
+    password,
+    role,
+  }: ICreateAdministratorDTO): Promise<Administrator> {
+    return getRepository(Administrator).save({ name, email, password, role });
   }
 
+  // async remove(entity: Administrator, options?: RemoveOptions | undefined): Promise<Administrator> {
+  //   return await getRepository(Administrator).remove(entity, options);
+  // }
 }

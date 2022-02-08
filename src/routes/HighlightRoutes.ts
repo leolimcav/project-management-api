@@ -1,5 +1,5 @@
 import { Router } from "express";
-import HighlightController from "../controllers/HighlightController";
+import HighlightController from "@controllers/HighlightController";
 
 const highlightRoutes = Router();
 const highlightController = new HighlightController();

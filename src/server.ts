@@ -1,14 +1,13 @@
-import 'reflect-metadata';
-import express, {json, NextFunction, Request, Response} from 'express';
-import 'express-async-errors';
+import "reflect-metadata";
+import express, { json, NextFunction, Request, Response } from "express";
+import "express-async-errors";
+import cors from "cors";
+import { config as envConfig } from "dotenv";
 
-import './database';
-import './config/DependencyInjectionResolver';
-import cors from 'cors';
-import {config as envConfig} from 'dotenv';
-import routes from './routes';
-
-import AppError from './errors/AppError';
+import "./database";
+import "./configs/DependencyInjectionResolver";
+import AppError from "@errors/AppError";
+import routes from "./routes";
 
 envConfig();
 
@@ -18,13 +17,19 @@ server.use(json());
 server.use(cors());
 server.use(routes);
 
-server.use((error: Error, request: Request, response: Response, next: NextFunction) => {
-  if(error instanceof AppError) {
-    return response.status(error.statusCode).json(error.message);
-  }
+server.use(
+  (error: Error, request: Request, response: Response, _: NextFunction) => {
+    if (error instanceof AppError) {
+      const key = error.key ? error.key : "ERROR MESSAGE";
+      console.info(`[${key}] -> ${error.message}`);
+      console.error(error.stack);
+      return response.status(error.statusCode).json(error.message);
+    }
 
-  return response.status(500).json(`Internal Server Error: ${error.message}`);
-});
+    console.error(error.stack);
+    return response.status(500).json(`Internal Server Error: ${error.message}`);
+  }
+);
 
 server.listen(process.env.PORT, () => {
   console.log(`Server running at port ${process.env.PORT}`);

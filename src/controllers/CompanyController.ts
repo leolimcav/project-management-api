@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getRepository, Repository } from "typeorm";
-import Administrator from "../models/Administrator";
-import Company from "../models/Company";
+import Administrator from "@models/models/Administrator";
+import Company from "@models/models/Company";
 
 export default class CompanyController {
   private readonly administratorRepo: Repository<Administrator>;

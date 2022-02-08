@@ -1,11 +1,13 @@
-import {Router} from 'express';
-import { container } from 'tsyringe';
+import { Router } from "express";
 
-import AdministratorController from '../controllers/AdministratorController';
+import AdministratorController from "@controllers/AdministratorController";
 
 const administratorRoutes = Router();
 const administratorController = new AdministratorController();
 
-administratorRoutes.get("/administrators/:id", administratorController.retrieve);
+administratorRoutes.get(
+  "/administrators/:id",
+  administratorController.retrieve
+);
 
 export default administratorRoutes;

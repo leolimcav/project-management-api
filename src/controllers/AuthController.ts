@@ -1,4 +1,4 @@
-import Administrator from "../models/Administrator";
+import Administrator from "@models/models/Administrator";
 import { getRepository, Repository } from "typeorm";
 import { Request, Response } from "express";
 

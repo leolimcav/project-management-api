@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { getRepository, Repository } from "typeorm";
 import { v4 as uuid } from 'uuid';
-import Administrator from "../models/Administrator";
-import Student from "../models/Student";
-import Partner from "../models/Partner";
-import Meeting from "../models/Meeting";
+import Administrator from "@models/Administrator";
+import Student from "@models/Student";
+import Partner from "@models/Partner";
+import Meeting from "@models/Meeting";
 
 export default class MeetingController {
   private readonly administratorRepo: Repository<Administrator>;
