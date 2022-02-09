@@ -23,7 +23,6 @@
     "forceConsistentCasingInFileNames": true,
     "types": [
       "@types/jest",
-      "@faker-js/faker"
     ],
     "paths": {
       "@models/*": [
