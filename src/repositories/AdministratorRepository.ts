@@ -1,9 +1,8 @@
-import { getRepository, getTreeRepository } from "typeorm";
+import { getRepository } from "typeorm";
 
 import IAdministratorRepository from "@interfaces/repository/IAdministratorRepository";
 import Administrator from "@models/Administrator";
 import ICreateAdministratorDTO from "@interfaces/dto/ICreateAdministratorDTO";
-import IUpdateAdministratorDTO from "@interfaces/dto/IUpdateAdministratorDTO";
 
 export default class AdministratorRepository
   implements IAdministratorRepository {

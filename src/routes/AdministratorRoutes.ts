@@ -10,4 +10,14 @@ administratorRoutes.get(
   administratorController.retrieve
 );
 
+administratorRoutes.post(
+  "/administrators",
+  administratorController.create
+);
+
+administratorRoutes.put(
+  "/administrators/:id",
+  administratorController.update
+)
+
 export default administratorRoutes;
