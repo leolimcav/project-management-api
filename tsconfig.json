@@ -22,7 +22,7 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "types": [
-      "@types/jest",
+      "@types/jest"
     ],
     "paths": {
       "@models/*": [

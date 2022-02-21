@@ -25,4 +25,8 @@ export class AdministratorRepositorySpy implements IAdministratorRepository {
 
     return createdAdmin;
   }
+
+  async update(entity: Administrator): Promise<Administrator> {
+    return await entity;
+  }
 }

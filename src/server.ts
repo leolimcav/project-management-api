@@ -18,7 +18,7 @@ server.use(cors());
 server.use(routes);
 
 server.use(
-  (error: Error, request: Request, response: Response, _: NextFunction) => {
+  (error: Error, __: Request, response: Response, _: NextFunction) => {
     if (error instanceof AppError) {
       const key = error.key ? error.key : "ERROR MESSAGE";
       console.info(`[${key}] -> ${error.message}`);

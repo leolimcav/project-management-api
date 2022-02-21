@@ -6,5 +6,6 @@ export default interface IAdministratorRepository {
   findOneByEmail(email: string): Promise<Administrator | undefined>;
   // findAndCount(options?: FindManyOptions<Administrator | undefined>): Promise<[Administrator[], number]>;
   save(entity: ICreateAdministratorDTO): Promise<Administrator>;
+  update(entiy: Administrator): Promise<Administrator>;
   // remove(entity: Administrator, options?: RemoveOptions | undefined): Promise<Administrator>;
 }

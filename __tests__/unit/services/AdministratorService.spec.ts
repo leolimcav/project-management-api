@@ -6,6 +6,7 @@ import Administrator from "@models/Administrator";
 import AppError from "@errors/AppError";
 import ICreateAdministratorDTO from "@interfaces/dto/ICreateAdministratorDTO";
 import { AdministratorRepositorySpy } from "@tests/spies/AdministratorRepositoryMock";
+import IUpdateAdministratorDTO from "@interfaces/dto/IUpdateAdministratorDTO";
 
 describe("AdministratorService", () => {
   it("should get an administrator with the provided id", async () => {
@@ -114,5 +115,21 @@ describe("AdministratorService", () => {
       "message",
       "Field(s) are empty!"
     );
+  });
+
+  it("Should update administrator with provided id and payload", async () => {
+    const administratorRepositorySpy = new AdministratorRepositorySpy();
+    const id = "valid_uuid";
+    const payload: IUpdateAdministratorDTO = {
+      name: "newname",
+      email: "newemail@email.com",
+      password: "1233212"
+    };
+
+    const sut = new AdministratorService(administratorRepositorySpy);
+
+    const result = await sut.update(id, payload);
+
+    expect(result.id).toBe(id);
   });
 });
