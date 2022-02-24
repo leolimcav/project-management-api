@@ -49,9 +49,9 @@ describe("AdministratorService", () => {
       password: "randompassword",
       role: "Administrator",
     };
-    const createdAdministrator = buildAdministratorMock();
+    let createdAdministrator: Administrator = buildAdministratorMock();
 
-    Object.assign(createdAdministrator, payload);
+    createdAdministrator = { ...payload, ...createdAdministrator };
 
     jest
       .spyOn(administratorRepositorySpy, "save")
@@ -63,7 +63,6 @@ describe("AdministratorService", () => {
 
     expect(result).toHaveProperty("id");
     expect(result.id).toBe("valid_uuid");
-    expect(result).toBeInstanceOf(Administrator);
   });
 
   it("Should encrypt password before the creation of the administrator", async () => {
