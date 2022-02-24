@@ -27,7 +27,7 @@ server.use(
     }
 
     console.error(error.stack);
-    return response.status(500).json(`Internal Server Error: ${error.message}`);
+    return response.status(500).json(`Internal Server Error: ${error}`);
   }
 );
 

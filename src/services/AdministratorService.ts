@@ -21,7 +21,7 @@ export default class AdministratorService {
       throw new AppError(
         "Administrator not found!",
         404,
-        "ADMINISTRATOR-CONTROLLER"
+        "ADMINISTRATOR-SERVICE"
       );
     }
 
@@ -30,7 +30,7 @@ export default class AdministratorService {
 
   async create({ name, email, password, role }: ICreateAdministratorDTO) {
     if (!name || !email || !password || !role) {
-      throw new AppError("Field(s) are empty!", 400);
+      throw new AppError("Field(s) are empty!", 400, "ADMINISTRATOR-SERVICE");
     }
 
     const emailAlreadyExists = await this.administratorRepo.findOneByEmail(
@@ -38,7 +38,7 @@ export default class AdministratorService {
     );
 
     if (emailAlreadyExists) {
-      throw new AppError("Email already exists!", 400);
+      throw new AppError("Email already exists!", 400, "ADMINISTRATOR-SERVICE");
     }
 
     const passwordHash = await bcrypt.hash(password, 8);
@@ -56,7 +56,7 @@ export default class AdministratorService {
     const administrator = await this.administratorRepo.findOneById(id);
 
     if (!administrator) {
-      throw new AppError("Administrator not found!", 404, "ADMINISTRATOR-CONTROLLER");
+      throw new AppError("Administrator not found!", 404, "ADMINISTRATOR-SERVICE");
     }
 
     const isPasswordEquals = await bcrypt.compare(password, administrator.password);

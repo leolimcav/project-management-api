@@ -132,4 +132,24 @@ describe("AdministratorService", () => {
 
     expect(result.id).toBe(id);
   });
+
+  it("should not update when provided administrator not exists", async () => {
+    const administratorRepositorySpy = new AdministratorRepositorySpy();
+    const id = "invalid_uuid";
+    const payload: IUpdateAdministratorDTO = {
+      name: "newname",
+      email: "newemail@email.com",
+      password: "1233212"
+    };
+
+    jest.spyOn(administratorRepositorySpy, "findOneById").mockResolvedValue(undefined);
+
+    const sut = new AdministratorService(administratorRepositorySpy);
+
+    await expect(sut.update(id, payload)).rejects.toBeInstanceOf(AppError);
+    await expect(sut.update(id, payload)).rejects.toHaveProperty(
+      "message",
+      "Administrator not found!"
+    );
+  });
 });
